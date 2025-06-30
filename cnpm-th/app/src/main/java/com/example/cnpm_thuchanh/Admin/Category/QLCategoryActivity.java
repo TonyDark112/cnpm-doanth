@@ -1,11 +1,19 @@
 package com.example.cnpm_thuchanh.Admin.Category;
 
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.cnpm_thuchanh.R;
+
+
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cnpm_thuchanh.Adapter.CategoryAdapter;
 import com.example.cnpm_thuchanh.Dao.CategoryDao;
 import com.example.cnpm_thuchanh.Model.Category;
 
@@ -23,9 +31,9 @@ public class QLCategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ql_category);
+        setContentView(R.layout.activity_qlcategory);
 
-        edtId = findViewById(R.id.edtId);
+
         edtName = findViewById(R.id.edtName);
         btnAdd = findViewById(R.id.btnAdd);
         btnUpdate = findViewById(R.id.btnUpdate);
@@ -45,13 +53,13 @@ public class QLCategoryActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         btnAdd.setOnClickListener(v -> {
-            Category c = new Category(
-                    Integer.parseInt(edtId.getText().toString()),
-                    edtName.getText().toString()
-            );
-            categoryDao.insert(c);
-            refreshData();
+            String name = edtName.getText().toString().trim();
+            if (!name.isEmpty()) {
+                categoryDao.insert(new Category(0, name)); // ID sẽ được SQLite tự tạo
+                refreshData();
+            }
         });
+
 
         btnUpdate.setOnClickListener(v -> {
             if (selected != null) {
